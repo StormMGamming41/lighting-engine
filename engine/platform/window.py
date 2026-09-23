@@ -1,5 +1,5 @@
-import glfw
 
+import glfw
 
 class Window:
     def __init__(self, width: int, height: int, title: str):

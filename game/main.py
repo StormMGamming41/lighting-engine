@@ -1,5 +1,5 @@
-from engine.platform.window import Window
 
+from engine.platform.window import Window
 
 def main():
     window = Window(1280, 720, "My Engine")
