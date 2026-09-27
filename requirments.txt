@@ -1,2 +1,0 @@
-glfw
-vulkan_py
