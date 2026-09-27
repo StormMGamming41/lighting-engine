@@ -6,7 +6,7 @@ from engine import Engine
 
 def main():
 
-    app = Engine("Test Engine", (1280, 720), False)
+    app = Engine("Test Engine", (1280, 720), "0.0.1", False, True) 
 
     while not app.window.should_close():
         app.update()

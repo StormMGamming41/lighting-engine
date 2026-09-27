@@ -40,10 +40,10 @@ class RHIInstance:
                 raise RuntimeError(f"Extension {ext} is not supported")
 
         lyr_count = c_uint32(0)
-        _check(vkEnumerateInstanceLayerProperties(None, byref(lyr_count), None), "vkEnumerateInstanceExtensionProperties")
+        _check(vkEnumerateInstanceLayerProperties(byref(lyr_count), None), "vkEnumerateInstanceExtensionProperties")
         available_lyrs = (VkLayerProperties * ext_count.value)()
-        vkEnumerateInstanceLayerProperties(None, byref(lyr_count), available_lyrs)
-        lyr_names = [l.extensionName for l in available_lyrs]
+        vkEnumerateInstanceLayerProperties(byref(lyr_count), available_lyrs)
+        lyr_names = [l.layerName for l in available_lyrs]
         for lyr in self.lyr_list:
                     if lyr not in lyr_names:
                         raise RuntimeError(f"Extension {lyr} is not supported")
@@ -53,7 +53,7 @@ class RHIInstance:
         app_info = VkApplicationInfo(
             pApplicationName=self.engine.title.encode("utf-8"),
             applicationVersion=make_version_from_str(self.engine.app_version),
-            pEngineName="Lighting Engine",
+            pEngineName=b"Lighting Engine",
             engineVersion=make_version_from_str(self.engine.version),
             apiVersion=VK_API_VERSION_1_3
         )
@@ -71,11 +71,14 @@ class RHIInstance:
         )
 
         raw_inst = VkInstance()
-        _check(vkCreateInstance(byref(create_info), None, byref(raw_inst)))
+        _check(vkCreateInstance(byref(create_info), None, byref(raw_inst)), "vkCreateInstance")
         self._handle = raw_inst
         self._dispatch = Instance(raw_inst)
+
+        print("Instance creation : success")
 
     def __del__(self):
 
         if self._handle and self._dispatch:
             self._dispatch.vkDestroyInstance(None)
+            print("Instance destroyed")

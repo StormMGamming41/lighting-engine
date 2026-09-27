@@ -19,6 +19,9 @@ class Window:
     def should_close(self) -> bool:
         return glfw.window_should_close(self._handle)
 
+    def get_rquired_extensions(self):
+        return glfw.get_required_instance_extensions()
+
     def update(self):
         glfw.poll_events()
 
