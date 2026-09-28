@@ -10,6 +10,8 @@ def main():
 
     while not app.window.should_close():
         app.update()
+    
+    app.close()
 
 if __name__ == "__main__":
     main()

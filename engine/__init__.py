@@ -5,6 +5,7 @@
 
 from .platform.window import *
 from .rhi.instance import RHIInstance
+from .rhi.debug_messenger import DebugMessenger
 
 class Engine:
 
@@ -14,8 +15,12 @@ class Engine:
 
         self.window = Window(title, size, resizable)
         self.title = title
+        self.debug = debug
         self.app_version = version
-        self.instance = RHIInstance(self, self.window.get_rquired_extensions(), ["VK_LAYER_KHRONOS_validation"] if debug else [])
+        self.inst_exts = self.window.get_rquired_extensions()
+        if debug: self.inst_exts.append("VK_EXT_debug_utils")
+        self.instance = RHIInstance(self, self.inst_exts, ["VK_LAYER_KHRONOS_validation"] if debug else [])
+        if debug: self.debugger = DebugMessenger(self.instance)
     
     def update(self):
 
@@ -23,5 +28,11 @@ class Engine:
 
     def cleanup(self):
 
-        del self.window
-        del self.instance
+        if self.debug: self.debugger.destroy()
+        self.instance.destroy()
+
+        self.window.close()
+    
+    def close(self):
+
+        self.cleanup()

@@ -77,8 +77,9 @@ class RHIInstance:
 
         print("Instance creation : success")
 
-    def __del__(self):
+    def destroy(self):
 
         if self._handle and self._dispatch:
             self._dispatch.vkDestroyInstance(None)
             print("Instance destroyed")
+

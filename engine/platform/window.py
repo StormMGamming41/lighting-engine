@@ -38,7 +38,7 @@ class Window:
         if not self._handle:
             raise RuntimeError("Window creation failed")
     
-    def __del__(self):
+    def close(self):
         if self._handle:
             glfw.destroy_window(self._handle)
         glfw.terminate()
