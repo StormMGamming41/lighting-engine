@@ -22,6 +22,10 @@ class RHIDevice:
         self._dispatch = None
         self.instance = instance
         self.surface = surface
+        self.physical_device = None
+        self.physical_devices = None
+        self.graphics_family = None
+        self.present_family = None
 
         self.pick_physical_device()
         self._create()
