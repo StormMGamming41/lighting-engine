@@ -3,7 +3,17 @@
 # - Currently there is only GLFW support
 # - More platform support will added in the future
 
+# Standard imports
+from ctypes import byref, c_void_p
 import glfw
+
+# Engine specific imports
+from ..rhi.utils import _check
+
+# My binding imports
+from vulkan_py import (
+    VkSurfaceKHR
+)
 
 class Window:
 
@@ -21,6 +31,11 @@ class Window:
 
     def get_rquired_extensions(self):
         return glfw.get_required_instance_extensions()
+
+    def get_surface(self, inst_handle):
+        surface_handle = c_void_p(0)
+        _check(glfw.create_window_surface(inst_handle.value, self._handle, None, byref(surface_handle)),"glfw.create_window_surface")
+        return VkSurfaceKHR(surface_handle.value)
 
     def update(self):
         glfw.poll_events()
@@ -43,4 +58,4 @@ class Window:
             glfw.destroy_window(self._handle)
         glfw.terminate()
 
-        print("Window cleanup done")
+        print("Window closed")

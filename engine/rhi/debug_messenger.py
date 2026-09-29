@@ -74,4 +74,4 @@ class DebugMessenger:
 
         if self._handle:
             self.instance._dispatch.vkDestroyDebugUtilsMessengerEXT(self._handle, None)
-            print("Messenger cleaned up")
+            print("Messenger destroyed")
